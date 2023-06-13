@@ -27,17 +27,17 @@ class ProductsController extends AbstractController
      */
     public function getAllProducts(Request $request, PaginatorInterface $paginator): JsonResponse
     {
-        //$products = $this->entityManager->getRepository(Products::class)->findAll();
-        $query = $this->entityManager->getRepository(Products::class)
-        ->createQueryBuilder('e')
-        ->getQuery();
-        
+        $products = $this->entityManager->getRepository(Products::class)->findAll();
+
         /*Pagination need to clarify how we will do it, from where will come page and number of elements*/
-        $products = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            10
-        );
+        // $query = $this->entityManager->getRepository(Products::class)
+        // ->createQueryBuilder('e')
+        // ->getQuery();
+        // $products = $paginator->paginate(
+        //     $query,
+        //     $request->query->getInt('page', 1),
+        //     10
+        // );
 
         if (!$products) {
             return $this->json(['error' => 'Products not found'], Response::HTTP_NOT_FOUND);
@@ -74,8 +74,8 @@ class ProductsController extends AbstractController
         $product->setProductType($requestData['product_type'] ?? null);   
         $product->setProductDescription($requestData['product_description'] ?? null);
         $product->setQuantity($requestData['quantity'] ?? null);
-        $product->setProductLikes($requestData['likes'] ?? null);
-        $product->setProductTags($requestData['tags'] ?? null);
+        $product->setLikes($requestData['likes'] ?? null);
+        $product->setTags($requestData['tags'] ?? null);
 
         // Save the new product to the database
         $this->entityManager->persist($product);
@@ -104,8 +104,8 @@ class ProductsController extends AbstractController
         $product->setProductType($requestData['product_type'] ?? null);   
         $product->setProductDescription($requestData['product_description'] ?? null);
         $product->setQuantity($requestData['quantity'] ?? null);
-        $product->setProductLikes($requestData['likes'] ?? null);
-        $product->setProductTags($requestData['tags'] ?? null);
+        $product->setLikes($requestData['likes'] ?? null);
+        $product->setTags($requestData['tags'] ?? null);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();

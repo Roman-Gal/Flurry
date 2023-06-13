@@ -43,7 +43,7 @@ class Products
     private ?int $quantity = null;
 
     /*TODO: remake to OneToMany entity*/
-    #[ORM\Column(length: 60, nullable: true)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $tags = null;
      
     public function getId(): ?int
@@ -142,7 +142,19 @@ class Products
 
     public function setLikes(?float $likes): static
     {
-        $this->price = $likes;
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    public function getTags(): ?string
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?string $tags): static
+    {
+        $this->tags = $tags;
 
         return $this;
     }
@@ -154,20 +166,10 @@ class Products
 
     public function setQuantity(?int $quantity): static
     {
-        $this->price = $quantity;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
-    public function getTags(): ?string
-    {
-        return $this->tags;
-    }
-
-    public function setTags(string $tags): static
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
+    
 }
