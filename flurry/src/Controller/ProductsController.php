@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Products;
+use Knp\Component\Pager\PaginatorInterface;
 /**
  * @Route("/api", name="api_")
  */
@@ -20,12 +21,23 @@ class ProductsController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
+
     /**
      * @Route("/products", name="get_all_products", methods={"GET"})
      */
-    public function getAllProducts(): JsonResponse
+    public function getAllProducts(Request $request, PaginatorInterface $paginator): JsonResponse
     {
-        $products = $this->entityManager->getRepository(Products::class)->findAll();
+        //$products = $this->entityManager->getRepository(Products::class)->findAll();
+        $query = $this->entityManager->getRepository(Products::class)
+        ->createQueryBuilder('e')
+        ->getQuery();
+        
+        /*Pagination need to clarify how we will do it, from where will come page and number of elements*/
+        $products = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         if (!$products) {
             return $this->json(['error' => 'Products not found'], Response::HTTP_NOT_FOUND);
@@ -113,6 +125,6 @@ class ProductsController extends AbstractController
         $this->entityManager->persist($product);
         $this->entityManager->remove($product);
         $this->entityManager->flush();
-        return $this->json(['message' => 'Product '.$product->getTitle().' succesfully deleted']);
+        return $this->json(['message' => 'Product '.$product->getTitle().' successfully deleted']);
     }
 }
