@@ -29,7 +29,7 @@ class MenuController extends AbstractController
     {
         $postions = $this->entityManager->getRepository(Menu::class)->findAll();
         if (!$postions) {
-            return $this->json(['error' => 'Products not found'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Positions not found'], Response::HTTP_NOT_FOUND);
         }
         return $this->json($postions);
     }
@@ -41,7 +41,7 @@ class MenuController extends AbstractController
     {
         $menu = $this->entityManager->getRepository(Menu::class)->find($id);
         if (!$menu) {
-            return $this->json(['error' => 'Product not found'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Position not found'], Response::HTTP_NOT_FOUND);
         }
 
         return $this->json($menu);
